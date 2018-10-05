@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">_99Bugs</string>
+    <string name="action_settings">Settings</string>
+    <string name="takeAwayButtonText">Take One Down</string>
+    <string name="takeAwayTwoButtonText">Take Two Down</string>
+    <string name="patchButtonText">Patch it Around</string>
+</resources>

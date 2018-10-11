@@ -12,6 +12,11 @@ namespace _99Bugs
     {
         TextView bugLabel;
         int bugTotal = 99;
+        const string MESSAGE_EXTRA = "BugMessage";
+        const string TOTAL_AFTER = "BugCount";
+        const string CLICKED = "WhichClicked";
+        const string TOTAL_BEFORE = "BugTotal";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -32,11 +37,13 @@ namespace _99Bugs
             layout.AddView(bugLabel);
             SetContentView(layout);
 
+            //user clicks take one down
             takeAwayButton.Click += (sender, e) =>
             {
                 MakeClickIntent(1, 0);
             };
 
+            //user clicks take 2 down
             takeAwayTwoButton.Click += (sender, e) =>
             {
                 MakeClickIntent(2, 1);
@@ -48,19 +55,21 @@ namespace _99Bugs
             base.OnActivityResult(requestCode, resultCode, data);
             if(resultCode == Result.Ok)
             {
-                bugLabel.Text = data.GetStringExtra("BugMessage");
-                bugTotal = data.GetIntExtra("BugCount", -1);
+                //get the updated total number of bugs left and display them
+                //bugLabel.Text = data.GetStringExtra(MESSAGE_EXTRA);
+                bugTotal = data.GetIntExtra(TOTAL_AFTER, -1);
+                bugLabel.Text = bugTotal + " little bugs left";
             }
         }
 
+        //number that was clicked is passed to second activity
         protected void MakeClickIntent(int numberClicked, int activityIndex)
         {
             var second = new Intent(this, typeof(SecondActivity));
-            second.PutExtra("FirstData", numberClicked);
-            if (bugTotal != -1)
-            {
-                second.PutExtra("BugTotal", bugTotal);
-            }
+            second.PutExtra(CLICKED, numberClicked);
+           
+            //total remaining bugs is passed to second activity
+            second.PutExtra(TOTAL_BEFORE, bugTotal);
 
             StartActivityForResult(second, activityIndex);
         }
